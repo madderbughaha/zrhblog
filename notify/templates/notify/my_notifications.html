@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    我的网站 | 我的消息
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="/static/blog/css/my_notification.css">
+{% endblock %}
+
+{% block script_extend %}
+    <script type="text/javascript" src="/static/blog/js/my_notification.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <!-- 侧边导航 -->
+        <div class="col-lg-2 col-md-2 hidden-xs hidden-sm message-space-left">
+            <div>
+                <span class="title"><span class="glyphicon glyphicon-send icon" aria-hidden="true"></span>我的消息</span>
+                <ul class="message-space-left-list">
+                    <li class="item">
+                        <a href="#" id="item-11" class="active">
+                            <span>回复我的</span>
+                            {% if notify_for_comment.unread %}
+                                <span class="badge unread">{{ notify_for_comment.unread.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" id="item-12"><span>收到的赞</span>
+                            {% if notify_for_like.unread %}
+                                <span class="badge unread">{{ notify_for_like.unread.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" id="item-4"><span>系统通知</span>
+                            {% if notify_for_system.unread %}
+                                <span class="badge unread">{{ notify_for_system.unread.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 显示内容 -->
+        <div class="message-space-right col-lg-10 col-md-9 col-xs-12">
+            <div class="message-title">
+                <span>回复我的</span>
+                <span id="11" class="mark-all">全部标记为已读</span>
+                <button type="button" class="notify-toggle collapsed pull-right hidden-lg hidden-md"
+                        data-toggle="collapse" data-target="#notify-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="message-title" style="display: none">
+                <span>收到的赞</span>
+                <span id="12" class="mark-all">全部标记为已读</span>
+                <button type="button" class="notify-toggle collapsed pull-right hidden-lg hidden-md"
+                        data-toggle="collapse" data-target="#notify-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="message-title" style="display: none">
+                <span>系统通知</span>
+                <span id="4" class="mark-all">全部标记为已读</span>
+                <button type="button" class="notify-toggle collapsed pull-right hidden-lg hidden-md"
+                        data-toggle="collapse" data-target="#notify-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div id="notify-collapse" class="collapse hidden-lg hidden-md">
+                <ul class="message-space-left-list">
+                    <li class="item">
+                        <a href="#" id="reply-me" class="active">
+                            <span class="item-title">回复我的</span>
+                            {% if notify_for_comment.unread %}
+                                <span class="badge unread">{{ notify_for_comment.unread.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" id="receive-like">
+                            <span class="item-title">收到的赞</span>
+                            {% if notify_for_like.unread %}
+                                <span class="badge unread">{{ notify_for_like.unread.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="#" id="system-notify"><span class="item-title">系统通知</span>
+                            {% if notify_for_system.unread %}
+                                <span class="badge unread">{{ notify_for_system.unread.count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 评论我的 -->
+            <div class="messsage-content">
+                <div class="message-card">
+                    <div id="message-card-11" class="message-space-right-bottom">
+                        {% for notification in notify_for_comment %}
+                            <div id='media-data-{{ notification.pk }}' class="media">
+                                <div class="media-left ">
+                                    <img class="img-circle media-object"
+                                         src="/static/blog/img/comment-list-img.jpg"
+                                         alt="...">
+                                </div>
+                                <div class="media-body">
+                                    <div class="line1"><span
+                                            class="media-heading name-filed">{{ notification.action_object.user.get_nickname_or_username }}</span>
+                                        <span class="desc-filed">{{ notification.verb }}</span>
+                                    </div>
+                                    <div class="content-list">{{ notification.description|safe }}</div>
+                                    <div class="line2">
+                                        <span class="time-span">{{ notification.timestamp|date:'Y年m月d日 H:i' }}</span>
+                                        <button class="reply-span"><i class="iconfont icon-huifu"></i> 回复</button>
+                                        <div class="notify-mark">
+                                            <button id="delete-data-{{ notification.pk }}" class="delete-notify" data-toggle="modal"
+                                                    data-target="#deleteModal">
+                                                <i class="glyphicon glyphicon-trash"></i> 删除
+                                            </button>
+                                        </div>
+                                        {% if notification.unread %}
+                                            <span class="new-notify">New</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li>暂无消息</li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- 收到的赞 -->
+            <div class="messsage-content" style="display: none">
+                <div class="message-card">
+                    <div id="message-card-12" class="message-space-right-bottom">
+                        {% for notification in notify_for_like %}
+                            <div id='media-data-{{ notification.pk }}' class="media">
+                                <div class="media-left ">
+                                    <img class="img-circle media-object"
+                                         src="/static/blog/img/comment-list-img.jpg"
+                                         alt="...">
+                                </div>
+                                <div class="media-body">
+                                    <div class="line1 receive-like-line1"><span
+                                            class="media-heading name-filed">{{ notification.action_object.user.get_nickname_or_username }}</span><span
+                                            class="desc-filed">{{ notification.verb }}</span>
+                                    </div>
+                                    <div class="line2">
+                                        <span class="time-span">{{ notification.timestamp|date:'Y年m月d日 H:i' }}</span>
+                                        <div class="notify-mark">
+                                            <button id="delete-data-{{ notification.pk }}" class="delete-notify"><i
+                                                    class="glyphicon glyphicon-trash"></i> 删除
+                                            </button>
+                                        </div>
+                                        {% if notification.unread %}
+                                            <span class="new-notify">New</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="text-box hidden-xs hidden-sm">
+                                    {{ notifications.description }}
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li>暂无消息</li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- 系统通知 -->
+            <div class="messsage-content" style="display: none">
+                <div class="message-card">
+                    <div id="message-card-4" class="message-space-right-bottom">
+                        {% for notification in notify_for_system %}
+                            <div id='media-data-{{ notification.pk }}' class="media">
+                                <div class="media-left ">
+                                    <img class="img-circle media-object"
+                                         src="/static/blog/img/comment-list-img.jpg">
+                                </div>
+                                <div class="media-body">
+                                    <div class="line1 receive-like-line1"><span
+                                            class="media-heading name-filed">Administrator</span>
+                                    </div>
+                                    <div class="content-list">{{ notification.verb }}</div>
+                                    <div class="line2">
+                                        <span class="time-span">{{ notification.timestamp|date:'Y年m月d日 H:i' }}</span>
+                                        {% if notification.unread %}
+                                            <span class="new-notify">New</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% empty %}
+                            <li>暂无消息</li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- 模态框 -->
+            <div class="modal fade " id="deleteModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">删除</h4>
+                        </div>
+                        <div class="modal-content-text">
+                            确认删除该条通知？
+                            <input type="hidden" id="object_id">
+                        </div>
+                        <div class="modal-btn">
+                            <button class="modal-delete-submit btn btn-primary">确认</button>
+                            <button class="btn btn-default" data-dismiss="modal" aria-label="Close">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

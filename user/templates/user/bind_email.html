@@ -1,0 +1,50 @@
+{% extends 'forms.html' %}
+
+{% block other_buttons %}
+    <button type="button" id="send-code" class="btn btn-default">发送验证码</button>
+{% endblock %}
+
+{% block script_extend %}
+    <script type="text/javascript">
+        $('input').focus(function () {
+            $('.tips').text('')
+        })
+        $('#send-code').click(function () {
+            let email = $('#id_email').val();
+            if (email !== '') {
+                $.ajax({
+                    url: '{% url 'send_verification_code' %}',
+                    type: 'GET',
+                    data: {
+                        'email': email
+                    },
+                    cache: false,
+                    success: (data) => {
+                        if (data['status'] === 'SUCCESS') {
+                            $(this).addClass('disabled');
+                            $(this).attr('disabled', true)
+                            let time = 30;
+                            $(this).text(time + 's');
+                            let interval = setInterval(() => {
+                                if (time <= 0) {
+                                    clearInterval(interval);
+                                    $(this).removeClass('disabled');
+                                    $(this).attr('disabled', false);
+                                    $(this).text('发送验证码');
+                                    return false;
+                                }
+                                time--;
+                                $(this).text(time + 's');
+                            }, 1000);
+
+                        } else {
+                            $('#tip2').text(data['error'])
+                        }
+                    }
+                });
+            } else {
+                $('#tip2').text('请输入正确的邮箱!')
+            }
+        });
+    </script>
+{% endblock %}

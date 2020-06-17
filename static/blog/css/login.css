@@ -1,0 +1,253 @@
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: url("/static/blog/img/login_background.jpg") top/cover no-repeat fixed !important;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #03e9f4;
+    overflow: hidden;
+}
+
+canvas {
+    display: none;
+}
+
+.bg {
+    background: url("/static/blog/img/login_background.jpg") top/cover no-repeat fixed !important;
+    height: 100%;
+    width: 100%;
+}
+
+.bg-blur {
+    float: left;
+    background-repeat: no-repeat;
+    background-position: 150% 150%;
+    background-size: cover;
+    -webkit-filter: blur(15px);
+}
+
+.con {
+    width: 100%;
+    top: 0;
+    position: absolute;
+}
+
+.navbar {
+    color: #dddddd!important;
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+input, button {
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+}
+
+rect {
+    fill: #0b111a !important;
+}
+
+.panel-footer {
+    display: none;
+}
+
+.loginBox {
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 15px 25px 0 rgba(0, 0, 0, .6);
+    box-sizing: border-box;
+    margin-top: 4em;
+    border-radius: 10px;
+}
+
+.box-title-line{
+    width: 100%;
+    text-align: center;
+    margin: 25px auto 50px;
+    height: 28px;
+}
+
+.box-title-line .title {
+    font-size: 30px;
+    color: #fff;
+    padding: 0 20px;
+}
+
+.box-title-line .title-line1{
+    width: 10%;
+    height: 1px;
+    background: #dddddd;
+    position: absolute;
+    left: 25%;
+    top:13%;
+}
+
+.box-title-line .title-line2{
+    width: 10%;
+    height: 1px;
+    background: #dddddd;
+    position: absolute;
+    right: 25%;
+    top:13%;
+}
+
+.item {
+    height: 45px;
+    width: 80% !important;
+    border-bottom: 1px solid #fff;
+    margin-bottom: 40px;
+    position: relative !important;
+    left: 2.2em;
+}
+
+.item input {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    padding-top: 25px;
+    box-sizing: border-box;
+}
+
+.item input:focus + lable {
+    top: 0 !important;
+    font-size: 12px;
+    transition: all .3s linear;
+}
+
+.item input:valid + lable {
+    top: 0 !important;
+    font-size: 12px;
+}
+
+
+.item lable {
+    font-family: "Times New Roman", Georgia, Serif, serif !important;
+    position: absolute !important;
+    left: 0;
+    top: 12px;
+}
+
+.pwdshow {
+    font-size: 14px !important;
+    position: absolute !important;
+    left: 100% !important;
+    top: 45% !important;
+}
+
+.pwdshow:hover {
+    cursor: pointer;
+}
+
+.forgot-pwd {
+    bottom: 70%;
+    position: absolute;
+    left: 78.5% !important;
+    font-size: 13px !important;
+    color: #F5AC37 !important;
+}
+
+.forgot-pwd:hover {
+    cursor: pointer;
+}
+
+.button {
+    font-family: "Times New Roman", Georgia, Serif, serif !important;
+    padding: 15px 20px;
+    margin-top: 30px;
+    margin-left: 35px;
+    color: #03e9f4;
+    position: relative;
+    bottom: 30px;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: .1s;
+    text-align: center;
+}
+
+.button:hover {
+    background: #03e9f4 !important;
+    border-radius: 5px;
+    color: #fff;
+    box-shadow: 0 0 5px 0 #03e9f4,
+    0 0 25px 0 #03e9f4,
+    0 0 50px 0 #03e9f4,
+    0 0 100px 0 #03e9f4;
+}
+
+.button > span {
+    position: absolute;
+}
+
+.button > span:nth-child(1) {
+    width: 100%;
+    height: 2px;
+    background: -webkit-linear-gradient(left, transparent, #03e9f4);
+    left: -100%;
+    top: 0;
+    animation: line1 1s linear infinite;
+}
+
+@keyframes line1 {
+    50%, 100% {
+        left: 100%;
+    }
+}
+
+.button > span:nth-child(2) {
+    width: 2px;
+    height: 100%;
+    background: -webkit-linear-gradient(top, transparent, #03e9f4);
+    right: 0;
+    top: -100%;
+    animation: line2 1s 0.25s linear infinite;
+}
+
+@keyframes line2 {
+    50%, 100% {
+        top: 100%;
+    }
+}
+
+.button > span:nth-child(3) {
+    width: 100%;
+    height: 2px;
+    background: -webkit-linear-gradient(left, #03e9f4, transparent);
+    left: 100%;
+    bottom: 0;
+    animation: line3 1s 0.5s linear infinite;
+}
+
+@keyframes line3 {
+    50%, 100% {
+        left: -100%;
+    }
+}
+
+.button > span:nth-child(4) {
+    width: 2px;
+    height: 100%;
+    background: -webkit-linear-gradient(top, #03e9f4, transparent);
+    left: 0;
+    top: 100%;
+    animation: line4 1s 0.75s linear infinite;
+}
+
+@keyframes line4 {
+    50%, 100% {
+        top: -100%;
+    }
+}
+
+.login-tips {
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    padding: 20px;
+}
+
+.auth-faild {
+    color: red !important;
+    font-size: 13px !important;
+    text-align: center;
+}

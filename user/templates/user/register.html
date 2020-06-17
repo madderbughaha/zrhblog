@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    欢迎登陆|ZrhBlog
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="/static/blog/css/register.css">
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+    <div class="container middle">
+    <div class="registerBox col-lg-4 col-lg-offset-4 col-md-5 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+        <div class="box-title-line">
+            <span class="title-line1"></span>
+            <span class="title">注册</span>
+            <span class="title-line2"></span>
+        </div>
+        <form id="login-form" action="{% url 'register' %}" method="POST">
+            <span class="auth-faild">{{ message }}</span>
+            {% csrf_token %}
+            <div class="item">
+                <input class="show-input" type="text" required="required" autocomplete="off"
+                       name="username" >
+                <lable>账号</lable>
+            </div>
+            <div class="item">
+                <input class="show-input" type="password" required="required" autocomplete="off"
+                       name="password">
+                <lable>密码</lable>
+                <lable class="pwdshow"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span></lable>
+            </div>
+            <div class="item">
+                <input class="show-input" type="password" required="required" autocomplete="off"
+                       name="pwd_again">
+                <lable>再次输入密码</lable>
+            </div>
+            <div class="item">
+                <input class="show-input" type="email" required="required" autocomplete="off"
+                       name="email">
+                <lable>邮箱</lable>
+            </div>
+            <button class="button login col-xs-10 col-xs-offset-1 col-lg-10 col-lg-offset-1" type="submit">注册
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </form>
+        <div class="register-tips"><span>已有账号？</span><a href="{% url 'login' %}">点我登录</a></div>
+        <p class="auth-faild">{{ reg_error }}</p>
+    </div>
+{% endblock %}
+
+{% block script_extend %}
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+        if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('register') > -1 || window.location.href.indexOf('auth') > -1) {
+            $('.navbar-right').css('display', 'none')
+            $('.bg').addClass('bg-blur')
+        }
+    </script>
+{% endblock %}

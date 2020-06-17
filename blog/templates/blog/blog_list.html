@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% load blog_filter %}
+{% load comment_tags %}
+{% load likes_tags %}
+
+{% block title %}
+    我的网站
+{% endblock %}
+
+{% block nav_blog_active %}active{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="/static/blog/css/blog.css">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row blog-row">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                <div class="blog-list-content panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">
+                            {% block blog_list_title %}
+                                <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>博客列表
+                            {% endblock %}</h2>
+                    </div>
+                    <div class="panel-body">
+                        {% for blog in page_of_blogs.object_list %}
+                            <div class="blog">
+                                <span><h3><a class="color-black" href="{% url 'blog_detail' blog.pk %}">
+                                    {{ blog.title }}
+                                </a></h3></span>
+                                <ol class="blog-info breadcrumb">
+                                    <li class="active"><span class="glyphicon glyphicon-time"></span>
+                                        <span class="hidden-xs">发表:</span> {{ blog.create_time|date:"Y-m-d" }}</li>
+                                    <li class="active"><span class="meta glyphicon glyphicon-refresh"></span>
+                                        <span class="hidden-xs">更新:</span> {{ blog.last_update_time|date:"Y-m-d" }}</li>
+                                    <li class="active"><span class="meta glyphicon glyphicon-tag"></span>
+                                        <span class="hidden-xs">分类:</span> <a
+                                                href="{% url 'blog_with_type' blog.blog_type.pk %}">
+                                            {{ blog.blog_type }}
+                                        </a></li>
+                                    <li class="active"><span class="meta glyphicon glyphicon-book"></span>
+                                        <span class="hidden-xs">本文字数</span> {{ blog.content|striptags|TextCount }}
+                                    </li>
+                                    <li class="active"><span class="glyphicon glyphicon-eye-open"></span>
+                                        <span class="hidden-xs">阅读</span>({{ blog.get_read_num }})
+                                    </li>
+                                    <li class="active"><span class="glyphicon glyphicon-comment"></span>
+                                        <span class="hidden-xs">评论</span>({% get_comment_count blog %})
+                                    </li>
+                                    <li class="active"><span class="like-icon glyphicon glyphicon-thumbs-up"></span>
+                                        <span class="hidden-xs">点赞</span>({% get_like_count blog %})
+                                    </li>
+                                </ol>
+                                <p>{{ blog.content|striptags|truncatechars:60 }}</p>
+                            </div>
+                        {% empty %}
+                            <div class="blog"><p>--暂无博客，敬请期待--</p></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="paginator">
+                    <ul class="pagination">
+                        {# 上一页 #}
+                        <li>
+                            {% if page_of_blogs.has_previous %}
+                                <a class="color-black" href="?page={{ page_of_blogs.previous_page_number }}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">上一页</span>
+                                </a>
+                            {% else %}
+                                <span hidden="true">上一页</span>
+                            {% endif %}
+                        </li>
+
+                        {# 全部页码 #}
+                        {% for page_num in page_range %}
+                            {% if page_num == page_of_blogs.number %}
+                                <li class="active"><span>{{ page_num }}</span></li>
+                            {% else %}
+                                {% if page_num == '...' %}
+                                    <li><span>{{ page_num }}</span></li>
+                                {% else %}
+                                    <li><a class="color-black" href="?page={{ page_num }}">{{ page_num }}</a></li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {# 下一页 #}
+                        <li>
+                            {% if page_of_blogs.has_next %}
+                                <a href="?page={{ page_of_blogs.next_page_number }}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">下一页</span>
+                                </a>
+                            {% else %}
+                                <span hidden="true">下一页</span>
+                            {% endif %}
+                        </li>
+                    </ul>
+                    <p>
+                        共有{{ page_of_blogs.paginator.count }}篇博客，
+                        当前为第{{ page_of_blogs.number }}页，
+                        共{{ page_of_blogs.paginator.num_pages }}页
+                    </p>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="blog-sort-content panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="meta glyphicon glyphicon-tag"></span>博客分类</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="blog-types">
+                            {% for blog_type in blog_types %}
+                                <li><a class="color-black" href="{% url 'blog_with_type' blog_type.pk %}">
+                                    -- {{ blog_type.type_name }} ({{ blog_type.blog_count }})
+                                </a></li>
+                                <hr>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="blog-date-content panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span class="meta glyphicon glyphicon-folder-open"></span>日期归档</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for blog_date, blog_count in blog_dates.items %}
+                                <a class="color-black"
+                                   href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">
+                                    <li>-- {{ blog_date|date:"Y年m月" }}---({{ blog_count }})</li>
+                                </a>
+                                <hr>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-hot-data col-xs-12">
+                    <div class="tab-head col-xs-12">
+                        <ul class="col-xs-12">
+                            <li class="col-xs-6">
+                                <a class="tab-active" href="#tab1" style="border-top-left-radius: 15px">最近上传</a>
+                            </li>
+                            <li class="col-xs-6 ">
+                                <a href="#tab2" style="border-top-right-radius: 15px">七日热门</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content col-xs-12">
+                        <div class="tab-item">
+                            <ul>
+                                {% for recent_blog in recent_upload_blog %}
+                                    <li class="media">
+                                        <div class="media-left hot-data-head">
+                                            <a href="{% url 'blog_detail' recent_blog.id %}">
+                                                <img class="media-object img-rounded"
+                                                     src="/static/blog/img/392ad84851907d467bad81f4219b8e7a.jpg"
+                                                     alt="...">
+                                            </a>
+                                        </div>
+                                        <div class="media-body hot-data-body">
+                                            <h4 class="media-heading"><a class="color-black"
+                                                                         href="{% url 'blog_detail' recent_blog.id %}">{{ recent_blog.title }}
+                                                <span class="learn-more pull-right">MORE</span></a>
+                                            </h4>
+                                            <ol class="blog-info breadcrumb">
+                                                <li class="active"><span class="meta glyphicon glyphicon-time"></span>
+                                                    {{ recent_blog.create_time|date:'Y年n月j日G:i' }}</li>
+                                            </ol>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <li>最近没有上传博客</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="tab-item" style="display: none">
+                            <ul>
+                                {% for hot_blog in recent_hot_data %}
+                                    <li class="media">
+                                        <div class="media-left hot-data-head">
+                                            <a href="{% url 'blog_detail' hot_blog.id %}">
+                                                <img class="media-object img-rounded"
+                                                     src="/static/blog/img/392ad84851907d467bad81f4219b8e7a.jpg"
+                                                     alt="...">
+                                            </a>
+                                        </div>
+                                        <div class="media-body hot-data-body">
+                                            <h4 class="media-heading">
+                                                <a class="color-black"
+                                                   href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}
+                                                    <span class="badge pull-right">阅读:{{ hot_blog.read_num_sum }}</span></a>
+                                                {% if hot_blog.read_num_sum > 20 %}
+                                                    <span class="glyphicon glyphicon-fire"
+                                                          style="font-size: 12px;color: red" aria-hidden="true"></span>
+                                                {% endif %}
+                                            </h4>
+                                            <ol class="blog-info breadcrumb">
+                                                <li class="active"><span class="glyphicon glyphicon-time"></span>
+                                                    <span class="hidden-xs"></span> {{ hot_blog.create_time|date:'Y年n月j日G:i' }}
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </li>
+                                {% empty %}
+                                    <li>暂时没有热门博客</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

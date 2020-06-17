@@ -1,0 +1,53 @@
+.home-content {
+    font-size: 200%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+}
+
+.btn-lg {
+    background: #000000;
+    color: #ffffff;
+    border-radius: 20px;
+    position: relative !important;
+    width: 40%;
+    z-index: 1;
+}
+
+.btn-lg:before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    top: -4px;
+    bottom: -4px;
+    border-radius: 10px;
+    filter: blur(20px);
+    z-index: -1;
+}
+.btn-lg:hover {
+    background: #000000;
+    color: #ffffff !important;
+}
+.btn-lg:hover::before {
+    background: #000000;
+}
+
+/*@keyframes sun {*/
+/*    100% {*/
+/*        background-position: -400% 0;*/
+/*    }*/
+/*}*/
+
+ol.blog-info {
+    padding: 0.5em 0 0 0;
+    background: transparent;
+    font-size: 0.9em;
+}
+
+.hot-data {
+    background: #FFFFFF;
+    display: none
+}

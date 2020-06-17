@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei", "微软雅黑", Helvetica, Tahoma, STXihei, "华文细黑", STHeiti, "Helvetica Neue", Helvetica, Tahoma, "Droid Sans", "wenquanyi micro hei", FreeSans, Arimo, Arial, SimSun, "宋体", Heiti, "黑体", sans-serif;
+
+}
+.navbar-default{
+    border-radius: unset!important;
+    background: #ffffff!important;
+    border: none!important;
+}
+hr{
+    margin-top: 10px!important;
+    margin-bottom: 10px!important;
+}
+a{
+    transition-duration: .35s!important;
+}
+a:hover{
+    text-decoration: none!important;
+    color: #F5AC37!important;
+}
+body{
+    background: #f5f5f5!important;
+}
+div.panel-heading{
+    background-color: #ffffff!important;
+    color: black!important;
+    padding: 1.2em;
+}
+.panel-title{
+    font-size: 16px!important;
+    font-weight: bold;
+}
+.panel-title span{
+    font-size: 14px!important;
+    margin-right: 1em;
+}
+
+div.panel-body{
+    padding: 2em!important;
+}
+ul{
+    list-style-type: none;
+}
+ol.linenums{
+    margin-left: 2.5em!important;
+}
+div.navbar-inverse{
+    background: rgba(0,0,0,0.8);
+    border-radius: unset;
+}
+div.navbar-default{
+    min-height: 20px;
+}
+div.panel-footer{
+    margin-top: 6em;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+}
+div.page-bottom{
+    position: absolute;
+    width: 100%;
+    bottom: -0.5em;
+}
+pre.prettyprint{
+    border: none!important;
+    padding: 0;!important;
+}
+li.L0, li.L1, li.L2, li.L3,
+li.L5, li.L6, li.L7, li.L8 {
+  list-style-type: decimal !important;
+}
+span.show-read-num{
+    color: #5993C5;
+}
+span.show-read-num:hover{
+    color: #F5AC37;
+    cursor: pointer;
+}
+div#read-num-container{
+    position: fixed;
+    z-index: 999;
+}
+.container-hidden{
+    display: none
+}
+.unread{
+    padding: 3px 5px!important;
+    border-radius: 8px;
+    font-size: 10px!important;
+    background: #FA5A57!important;
+    position: absolute;
+    font-weight: normal!important;
+    right: 10px;
+    bottom: 55px;
+
+}

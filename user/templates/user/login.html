@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    欢迎登陆|ZrhBlog
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="/static/blog/css/login.css">
+{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+    <div class="container middle">
+    <div class="loginBox col-lg-4 col-lg-offset-4 col-md-5 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+        <div class="box-title-line">
+            <span class="title-line1"></span>
+            <span class="title">登录</span>
+            <span class="title-line2"></span>
+        </div>
+        <form id="login-form" action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <div class="item">
+                <input class="show-input" type="text" required="required" autocomplete="off"
+                       name="username">
+                <lable>账号</lable>
+            </div>
+            <div class="item">
+                <a href="{% url 'forgot_password' %}?from={{ request.get_full_path }}" class="forgot-pwd">忘记密码</a>
+                <input class="show-input" type="password" required="required" autocomplete="new-password"
+                       name="password">
+                <lable>密码</lable>
+                <lable class="pwdshow"><span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                </lable>
+            </div>
+            <button class="button login col-xs-10 col-xs-offset-1 col-lg-10 col-lg-offset-1" type="submit">登录
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </form>
+        <div class="login-tips"><span>还没有账号？</span><a href="{% url 'register' %}">点我创建</a></div>
+        <p class="auth-faild">{{ message }}</p>
+    </div>
+{% endblock %}
+
+{% block script_extend %}
+    <script type="text/javascript">
+        if (window.location.href.indexOf('login') > -1 || window.location.href.indexOf('register') > -1 || window.location.href.indexOf('auth') > -1) {
+            $('.navbar-right').css('display', 'none')
+            $('.bg').addClass('bg-blur')
+        }
+    </script>
+{% endblock %}

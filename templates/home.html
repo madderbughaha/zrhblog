@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    我的网站|首页
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="/static/blog/css/home.css">
+{% endblock %}
+
+{% block content %}
+    <div class="home-content jumbotron">
+        <h2>欢迎</h2>
+        <p>欢迎来到我的博客，随便看看...</p>
+        <p><a class="btn btn-lg" href="{% url 'blog_list' %}" role="button"><span
+                class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></a></p>
+    </div>
+{% endblock %}
