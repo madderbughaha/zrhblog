@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/static/blog/css/login.css">
 {% endblock %}
 
+{% load user_tags %}
+
 
 {% block content %}
     <div class="row">
@@ -41,6 +43,10 @@
             </button>
         </form>
         <div class="login-tips"><span>还没有账号？</span><a href="{% url 'register' %}">点我创建</a></div>
+        <div class="oauth">
+            <div class="oauth-github"><span class="iconfont icon-github"></span><a href="{% get_login_github_url %}">GitHub</a></div>
+            <div class="oauth-qq"><span class="iconfont icon-QQ"></span><a href="">QQ</a></div>
+        </div>
         <p class="auth-faild">{{ message }}</p>
     </div>
 {% endblock %}

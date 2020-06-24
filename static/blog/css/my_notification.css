@@ -1,5 +1,5 @@
 body {
-    background: url("/static/blog/img/message-background.jpg") top/cover no-repeat fixed !important;
+    background: url("/static/blog/img/msgbg.jpg") top/cover no-repeat fixed !important;
     overflow: hidden;
 }
 a{
@@ -11,13 +11,27 @@ button:focus{
     outline: 0!important;
 }
 
-.navbar{
+header.navbar{
+    background: rgba(255,255,255,0.9) !important;
+    position: unset!important;
+}
+
+header.navbar a{
+    color: #999999!important;
+}
+
+header.navbar a:hover{
+    color: #F5AC37!important;
+}
+
+ul.nav-dropdown-menu{
     background: rgba(255,255,255,0.9) !important;
 }
 
 div.container {
     height: calc(100vh - 45px);
     padding: 0!important;
+    margin-top: 1.4em;
 }
 
 div.media {

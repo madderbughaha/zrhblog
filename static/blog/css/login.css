@@ -33,9 +33,11 @@ canvas {
     position: absolute;
 }
 
+
 .navbar {
-    color: #dddddd!important;
+    border: unset!important;
     background: rgba(0, 0, 0, 0.5) !important;
+    border-radius: unset!important;
 }
 
 input, button {
@@ -54,10 +56,9 @@ rect {
 
 .loginBox {
     background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 15px 25px 0 rgba(0, 0, 0, .6);
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, .6);
     box-sizing: border-box;
-    margin-top: 4em;
-    border-radius: 10px;
+    margin-top: 3em;
 }
 
 .box-title-line{
@@ -152,7 +153,7 @@ rect {
 
 .button {
     font-family: "Times New Roman", Georgia, Serif, serif !important;
-    padding: 15px 20px;
+    padding: 10px 20px;
     margin-top: 30px;
     margin-left: 35px;
     color: #03e9f4;
@@ -250,4 +251,22 @@ rect {
     color: red !important;
     font-size: 13px !important;
     text-align: center;
+}
+
+.oauth{
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.oauth div{
+    display: inline-block;
+    padding: 0 1em;
+}
+
+.oauth div>span{
+    padding-right: 5px!important;
+}
+
+.oauth a:hover{
+    color: unset!important;
 }

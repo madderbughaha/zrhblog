@@ -46,7 +46,7 @@
                     <div>{{ blog.content|safe }}</div>
                     <div class="blog-more">
                         <div class="like pull-left" onclick="likeChanged(this,'blog',{{ blog.pk }})">
-                            <i class="like-icon iconfont icon-praise_icon {% get_like_status blog %}"></i>
+                            <i class="like-icon iconfont icon-dianzan {% get_like_status blog %}"></i>
                             <span class="like-num">{% get_like_count blog %}</span>
                         </div>
                         <nav class="blog-more" aria-label="...">
@@ -85,13 +85,13 @@
                                 </div>
                                 <div id="root_{{ comment.pk }}" class="media-body comment-list-detail-body">
                                     <h5 class="media-heading comment-list-detail-body-user">{{ comment.user.get_nickname_or_username }}</h5>
-                                    <p id="comment-{{ comment.pk }}"
-                                       class="comment-list-detail-body-content">{{ comment.text|safe }}</p>
+                                    <div id="comment-{{ comment.pk }}"
+                                         class="comment-list-detail-body-content">{{ comment.text|safe }}</div>
                                     <div class="comment-list-detail-body-info">
                                         <span class="comment-list-detail-body-info-time">{{ comment.comment_time|date:"Y-m-d H:i" }}</span>
                                         <span class="comment-like"
                                               onclick="likeChanged(this,'{% get_content_type comment %}',{{ comment.pk }})">
-                                        <span class="like-icon iconfont icon-praise_icon {% get_like_status comment %}"></span>
+                                        <span class="like-icon iconfont icon-dianzan {% get_like_status comment %}"></span>
                                         <span class="like-num">{% get_like_count comment %}</span>
                                     </span>
                                         {% if user.is_authenticated %}
@@ -113,15 +113,20 @@
                                             </div>
                                             <div class="media-body reply-list-detail-body comment-list-detail-body">
                                                 <h5 class="media-heading comment-list-detail-body-user">{{ reply.user.get_nickname_or_username }}</h5>
-                                                <span class="hidden-sm hidden-xs">回复</span> <a class="hidden-sm hidden-xs" href="javascript:void(0)">@{{ reply.reply_to.get_nickname_or_username }}</a><span class="hidden-sm hidden-xs">:</span>
-                                                <p id="comment-{{ reply.pk }}" class="comment-list-detail-body-content">
+                                                <span class="hidden-sm hidden-xs"
+                                                      STYLE="FONT-SIZE: 13px;font-weight: 600;color: #666;">REPLY</span>
+                                                <a class="hidden-sm hidden-xs"
+                                                   href="javascript:void(0)">@{{ reply.reply_to.get_nickname_or_username }}</a>
+                                                <span class="hidden-sm hidden-xs">:</span>
+                                                <div id="comment-{{ reply.pk }}"
+                                                     class="comment-list-detail-body-content">
                                                     {{ reply.text|safe }}
-                                                </p>
+                                                </div>
                                                 <div class="comment-list-detail-body-info">
                                                     <span class="comment-list-detail-body-info-time">{{ reply.comment_time|date:"Y-m-d H:i" }}</span>
                                                     <span class="reply-like"
                                                           onclick="likeChanged(this,'{% get_content_type reply %}',{{ reply.pk }})">
-                                                    <span class="like-icon iconfont icon-praise_icon {% get_like_status reply %}"></span>
+                                                    <span class="like-icon iconfont icon-dianzan {% get_like_status reply %}"></span>
                                                     <span class="like-num">{% get_like_count reply %}</span>
                                                 </span>
                                                     {% if user.is_authenticated %}
@@ -164,7 +169,7 @@
                                     {{ filed }}
                                 {% endfor %}
                                 <span id="comment-error" class="text-danger pull-right"></span>
-                                <input class="btn btn-primary"
+                                <input class="submit-comment-button btn btn-primary"
                                        type="submit" value="评论">
                             </form>
                         {% else %}

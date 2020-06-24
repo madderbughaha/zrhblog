@@ -8,11 +8,376 @@
     <link rel="stylesheet" href="/static/blog/css/home.css">
 {% endblock %}
 
-{% block content %}
-    <div class="home-content jumbotron">
-        <h2>欢迎</h2>
-        <p>欢迎来到我的博客，随便看看...</p>
-        <p><a class="btn btn-lg" href="{% url 'blog_list' %}" role="button"><span
-                class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span></a></p>
+{% load comment_tags %}
+{% load likes_tags %}
+
+{% block header_nav_extend %}
+    <div class="home-box">
+        <div class="swiper-container home-slideshow">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg05.jpg');">
+                    <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
+                         swiper-animate-effect="bounceIn">
+                        <div class="row">
+                            <div>
+                                <div class="title-box ">
+                                    <span class="title-box-line1"></span>
+                                    <strong class="title">
+                                        Welcome
+                                    </strong>
+                                    <span class="title-box-line2"></span>
+                                </div>
+                                <h1>
+                                    WELCOME<br>TO<br>ZRH'S BLOG
+                                </h1>
+                                <a href="" class="about-me">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg02.jpg');">
+                    <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
+                         swiper-animate-effect="bounceIn">
+                        <div class="row">
+                            <div>
+                                <div class="title-box">
+                                    <strong class="title">
+                                        Author
+                                    </strong>
+                                </div>
+                                <h1>
+                                    CREATED<br>BY<br>ZHAN RH
+                                </h1>
+                                <a href="" class="about-me">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg03.jpg')">
+                    <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
+                         swiper-animate-effect="bounceIn">
+                        <div class="row">
+                            <div>
+                                <div class="title-box">
+                                    <strong class="title">
+                                        Framework
+                                    </strong>
+                                </div>
+                                <h1>
+                                    DJANGO<br>VERSION 2.2<br>PYTHON 3.7
+                                </h1>
+                                <a href="" class="about-me">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg04.jpg')">
+                    <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
+                         swiper-animate-effect="bounceIn">
+                        <div class="row">
+                            <div>
+                                <div class="title-box">
+                                    <strong class="title">
+                                        Support
+                                    </strong>
+                                </div>
+                                <h1>
+                                    DEPLYOED<br>IN<br>ALIBABA CLOUD COMPUTING
+                                </h1>
+                                <a href="" class="about-me">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg01.jpg')">
+                    <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
+                         swiper-animate-effect="bounceIn">
+                        <div class="row">
+                            <div>
+                                <div class="title-box">
+                                    <strong class="title">
+                                        Motto
+                                    </strong>
+                                </div>
+                                <h1>
+                                    LIFE'S TOO<br>SHORT<br>TO EVEN CARE AT ALL
+                                </h1>
+                                <a href="" class="about-me">About Me</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="switch-thumbs">
+            <div class="center-block">
+                <div class="swiper-button-prev hidden-xs"></div>
+                <div class="swiper-button-next hidden-xs"></div>
+                <div class="swiper-container switch-slideshow">
+                    <div class="swiper-wrapper">
+                        {% for blog in get_top_five_blog %}
+                            <div class="swiper-slide">
+                                <div class="slide-holder">
+                                    <div class="img-holder">
+                                        <img src="{{ blog.pic_800_450.url }}" alt="image description">
+                                    </div>
+                                    <h3><a href="/blog/{{ blog.id }}"
+                                           target="_blank">{{ blog.title|slice:"18" }}...</a></h3>
+                                    <time datetime="2011-01-12">{{ blog.create_time }}</time>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+{% block content %}
+    <main>
+        <div class="home-detail">
+            <div class="container">
+                <div class="row">
+                    <article class="home-detail-content col-xs-12 col-md-8">
+                        <section class="site-info wow animated fadeIn" data-wow-delay="0.6s" data-wow-duration="1s">
+                            <div class="site-info-title">
+                                <h3>博客信息</h3>
+                                <ul class="hidden-md hidden-xs">
+                                    <li id="total_visit"><span class="glyphicon glyphicon-fire"></span>
+                                        阅读总量:{{ total_read_num }}</li>
+                                    <li id="days_running"><span class="glyphicon glyphicon-certificate"></span>
+                                        运行天数：0
+                                    </li>
+                                    <li id="article_count"><span class="glyphicon glyphicon-file"></span>
+                                        文章数量:{{ total_blog }}
+                                    </li>
+                                    <li id="comment_count"><span class="glyphicon glyphicon-comment"></span>
+                                        评论数量：{{ total_comment }}
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="blog-chart"></div>
+                        </section>
+                        <p class="echart-url"><a href="https://echarts.apache.org/zh/index.html" target="_blank">BY
+                            ECHARTS</a></p>
+                        <section class="rec-article">
+                            <h3>Recommend Article</h3>
+                            {% for article in get_recommend_article %}
+                                <div class="post-content wow animated fadeInLeft" data-wow-delay="0.6s">
+                                    <section class="post-user">
+                                        <a href="javascript:;">
+                                            <img src='/static/blog/img/my_avatar.jpg' alt="">
+                                        </a>
+                                        <p class="name">{{ article.author }}</p>
+                                        <p class="post-time">{{ article.create_time }}</p>
+                                    </section>
+                                    <section class="post-title">
+                                        <p><a href={% url 'blog_detail' article.pk %}>#{{ article.title }}</a></p>
+                                    </section>
+                                    <div class="post-img">
+                                        <img src='{{ article.pic_800_450.url }}' alt='{{ article.title }}'>
+                                    </div>
+                                    <section class="post-option">
+                                        <p class="reply-count"><span
+                                                class="iconfont icon-huifu"></span><span>{% get_like_count article %}</span>
+                                        </p>
+                                        <p class="like_count"><span
+                                                class="iconfont icon-dianzan"></span><span>{% get_comment_count article %}</span>
+                                        </p>
+                                    </section>
+                                </div>
+                            {% empty %}
+                                <p>暂无推荐</p>
+                            {% endfor %}
+                        </section>
+                        <section>
+
+                        </section>
+                    </article>
+                    <aside id="sidebar" class="col-xs-12 col-md-4">
+                        <section class="person-info wow animated fadeInRight" data-wow-delay="0.6s">
+                            <div id="left"></div>
+                            <div id="top"></div>
+                            <div id="right"></div>
+                            <div id="bottom"></div>
+                            <div class="person-img">
+                                <img class="my-avatar" src="/static/blog/img/my_avatar.jpg" alt="">
+                            </div>
+                            <div class="person-intro">
+                                <p class="person-name">九七老不死</p>
+                                <p class="person-motto">你为什么不问问神奇海螺呢？</p>
+                                <p class="person-motto-e">Why don't you try to ask the magic conch ?</p>
+                            </div>
+                            <div class="person-footer">
+                                <a href="https://github.com/zhanronghui" title="View My GitHub"><span
+                                        class="iconfont icon-github"></span></a>
+                                <a href="https://gitee.com/glblog" title="View My Gitee"><span
+                                        class="iconfont icon-gitee"></span></a>
+                            </div>
+                        </section>
+                        <section class="search wow animated fadeInUp">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="随便看看...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="button"><span
+                                            class="glyphicon glyphicon-search"></span></button>
+                                </span>
+                            </div><!-- /input-group -->
+                        </section>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block script_extend %}
+    <script type="text/javascript">
+        //home页轮播图插件
+        const galleryThumbs = new Swiper('.switch-slideshow', {
+            speed: 600,
+            loop: true,
+            slideToClickedSlide: true,
+            updateOnWindowResize: true,
+            setWrapperSize: true,
+            slidesPerView: 'auto',
+            preventClicksPropagation: false,
+            freeMode: false,
+            longSwipes: false,
+            touchReleaseOnEdges: true,
+            observer: true,
+            observeSlideChildren: true,
+        });
+        const galleryTop = new Swiper('.home-slideshow', {
+            speed: 600,
+            updateOnWindowResize: true,
+            effect: 'fade',
+            followFinger: false,
+            loop: true, // 循环模式选项
+            autoplay: {
+                delay: 10000,
+                waitForTransition: true,
+            },
+            fadeEffect: {
+                crossFade: true,
+            },
+            breakpoints: {
+                320: {  //当屏幕宽度大于等于320
+                    loopedSlides: 3,
+                },
+                672: {
+                    loopedSlides: 4,
+                },
+                962: {  //当屏幕宽度大于等于768
+                    loopedSlides: 5,
+                },
+                1300: {  //当屏幕宽度大于等于1280
+                    loopedSlides: 6,
+                },
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            on: {
+                init: function () {
+                    swiperAnimateCache(this); //隐藏动画元素
+                    swiperAnimate(this); //初始化完成开始动画
+                },
+                slideChangeTransitionEnd: function () {
+                    swiperAnimate(this); //每个slide切换结束时也运行当前slide动画
+                    //this.slides.eq(this.activeIndex).find('.ani').removeClass('ani'); 动画只展现一次，去除ani类名
+                }
+            },
+        });
+        galleryTop.controller.control = galleryThumbs;
+        galleryThumbs.controller.control = galleryTop;
+
+        //绘制博客图表
+        const blog_chart = echarts.init(document.getElementById('blog-chart'));
+
+        //指定图标数据
+        blog_chart.setOption({
+            title: {
+                left: 'center',
+                letterSpacing: 20,
+                text: '分 类 统 计',
+                textStyle: {
+                    color: '#101a2b',
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    lineHeight: 55,
+
+                },
+            },
+            textStyle: {
+                color: '#101a2b',
+                fontSize: 13,
+                fontWeight: 'bold',
+            },
+            labelLine: {
+                lineStyle: {
+                    color: '#101a2b'
+                }
+            },
+            roseType: 'angle',
+            series: [
+                {
+                    name: '名称',
+                    type: 'pie',
+                    radius: '55%',
+                    data: [
+                        {% for item in get_echarts_item %}
+                            {value: '{{ item.item_count }}', name: '{{ item.type_name}}'},
+                        {% endfor %}
+                        /*{value: 235, name: 'Django'},
+                        {value: 274, name: 'Python'},
+                        {value: 310, name: 'Vue'},
+                        {value: 335, name: 'LeetCode'},
+                        {value: 400, name: '水'}*/
+                    ]
+                }
+            ],
+            tooltip: {
+                show: true,
+                textStyle: {
+                    color: '#fff',
+                    fontSize: 14,
+                    fontWeight: 'normal',
+                },
+                formatter: '{a}：{b0}<br/>数量：{c0}({d}%)'
+            },
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 200,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            },
+
+        });
+
+
+        function days_running() {
+            const Birthday = new Date('2020-6-20');
+            const Today = new Date();
+            const time_old = Today.getTime() - Birthday.getTime();
+            const second_perday = 24 * 60 * 60 * 1000;
+            const days_old = time_old / second_perday;
+            const days_running = Math.floor(days_old);
+            $('#days_running').text('运行天数：' + days_running + '天')
+        }
+
+        days_running();
+
+        function search_focus() {
+            const search_input = $('.search input');
+            search_input.focus(function () {
+                $('.search button').addClass('btn_to_red')
+            });
+            search_input.blur(function () {
+                $('.search button').removeClass('btn_to_red')
+            });
+        }
+
+        search_focus()
+    </script>
 {% endblock %}

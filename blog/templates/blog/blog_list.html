@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block content %}
+    <div style="width: 100%;height: 300px;border: 1px solid #000000;margin-bottom: 5em"></div>
     <div class="container">
         <div class="row blog-row">
             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
@@ -28,9 +29,14 @@
                     <div class="panel-body">
                         {% for blog in page_of_blogs.object_list %}
                             <div class="blog">
-                                <span><h3><a class="color-black" href="{% url 'blog_detail' blog.pk %}">
-                                    {{ blog.title }}
-                                </a></h3></span>
+                                <span>
+                                    <h3>
+                                        <a class="color-black" href="{% url 'blog_detail' blog.pk %}">
+                                        {{ blog.title }}
+                                        </a>
+                                        <img src="{{ blog.avatar.url }}" alt="">
+                                    </h3>
+                                </span>
                                 <ol class="blog-info breadcrumb">
                                     <li class="active"><span class="glyphicon glyphicon-time"></span>
                                         <span class="hidden-xs">发表:</span> {{ blog.create_time|date:"Y-m-d" }}</li>

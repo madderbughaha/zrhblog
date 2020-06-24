@@ -2,6 +2,8 @@ import string
 import random
 import time
 import threading
+import urllib.request
+import json
 from smtplib import SMTPRecipientsRefused
 from django.contrib import auth
 from django.core.exceptions import ValidationError
@@ -11,7 +13,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.core.validators import validate_email
-from user.models import Profile
+from urllib.parse import urlencode, parse_qs
+from .models import Profile, OAuthRelationShip
 from zrhblog import settings
 from .forms import LoginForm, ChangeNicknameForm, BindEmailForm, ChangeEmailForm, ChangePasswordForm, ForgotPasswordForm
 
@@ -33,6 +36,51 @@ class SendMail(threading.Thread):
             [self.email],
             fail_silently=self.fail_silently,
         )
+
+
+# GitHub登录
+def login_by_github(request):
+    code = request.GET.get('code')
+    state = request.GET.get('state')
+
+    if state != settings.GitHub_state:
+        raise Exception('state error')
+    # Access token
+    params = {
+        'client_id': settings.GitHub_APP_ID,
+        'client_secret': settings.GitHub_APP_Secret,
+        'code': code,
+        'redirect_uri': settings.GitHub_Redirect,
+    }
+    response = urllib.request.urlopen('https://github.com/login/oauth/access_token?' + urlencode(params))
+    data = response.read().decode('utf-8')
+    access_token = parse_qs(data)['access_token'][0]
+    # 用户标识id
+    url = 'https://api.github.com/user'
+    github_request = urllib.request.Request(url, headers={'Authorization': 'token ' + access_token})
+    response = urllib.request.urlopen(github_request)
+    data = response.read().decode('utf-8')
+    node_id = json.loads(data)['node_id']
+
+    # 判断node_id是否关联用户,已关联则直接登录
+    if OAuthRelationShip.objects.filter(open_id=node_id, oauth_type=1).exists():
+        relationship = OAuthRelationShip.objects.get(open_id=node_id, oauth_type=1)
+        user = relationship.user
+    else:
+        # 未关联则创建用户,并关联Node_id
+        username = str(int(time.time()))
+        password = ''.join(random.sample(string.ascii_letters + string.digits, 8))
+        nickname = json.loads(data)['name']
+        user = User.objects.create_user(username, '', password)
+        Profile.objects.get_or_create(user=user, nickname=nickname)
+        relationship = OAuthRelationShip()
+        relationship.user = user
+        relationship.open_id = node_id
+        relationship.oauth_type = 1
+        relationship.save()
+    # 登录
+    auth.login(request, user)
+    return redirect(reverse('home'))
 
 
 # 检测表单中是否含有汉字
@@ -105,7 +153,7 @@ def login(request):
 def logout(request):
     auth.logout(request)
     redirect_to = request.GET.get('from')
-    if(request.GET.get('from')).find('my_notifications'):
+    if (request.GET.get('from')).find('my_notifications'):
         redirect_to = reverse('home')
     return redirect(redirect_to, reverse('home'))
 

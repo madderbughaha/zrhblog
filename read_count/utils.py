@@ -46,8 +46,8 @@ def get_seven_days_read_data(content_type):
 # 获取当天热门博客
 def get_today_hot_data(content_type):
     today = timezone.now().date()
-    read_details = ReadDetail.objects.filter(content_type=content_type, date=today).order_by('-read_num')
-    return read_details[:7]
+    read_details = ReadDetail.objects.filter(content_type=content_type, date__lt=today).order_by('-read_num')
+    return read_details[:1]
 
 
 # 获取7天热门博客

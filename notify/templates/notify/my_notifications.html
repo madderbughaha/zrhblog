@@ -46,7 +46,7 @@
         </div>
         <!-- 显示内容 -->
         <div class="message-space-right col-lg-10 col-md-9 col-xs-12">
-            <div class="message-title">
+            <div class="message-title animated fadeIn">
                 <span>回复我的</span>
                 <span id="11" class="mark-all">全部标记为已读</span>
                 <button type="button" class="notify-toggle collapsed pull-right hidden-lg hidden-md"
@@ -56,7 +56,7 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="message-title" style="display: none">
+            <div class="message-title animated fadeIn" style="display: none">
                 <span>收到的赞</span>
                 <span id="12" class="mark-all">全部标记为已读</span>
                 <button type="button" class="notify-toggle collapsed pull-right hidden-lg hidden-md"
@@ -66,7 +66,7 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="message-title" style="display: none">
+            <div class="message-title animated fadeIn" style="display: none">
                 <span>系统通知</span>
                 <span id="4" class="mark-all">全部标记为已读</span>
                 <button type="button" class="notify-toggle collapsed pull-right hidden-lg hidden-md"
@@ -106,7 +106,7 @@
             <!-- 评论我的 -->
             <div class="messsage-content">
                 <div class="message-card">
-                    <div id="message-card-11" class="message-space-right-bottom">
+                    <div id="message-card-11" class="message-space-right-bottom animated fadeInUp">
                         {% for notification in notify_for_comment %}
                             <div id='media-data-{{ notification.pk }}' class="media">
                                 <div class="media-left ">
@@ -144,9 +144,9 @@
             <!-- 收到的赞 -->
             <div class="messsage-content" style="display: none">
                 <div class="message-card">
-                    <div id="message-card-12" class="message-space-right-bottom">
+                    <div id="message-card-12" class="message-space-right-bottom animated fadeInUp">
                         {% for notification in notify_for_like %}
-                            <div id='media-data-{{ notification.pk }}' class="media">
+                            <div id='media-data-{{ notification.pk }}' class="media ">
                                 <div class="media-left ">
                                     <img class="img-circle media-object"
                                          src="/static/blog/img/comment-list-img.jpg"
@@ -182,9 +182,9 @@
             <!-- 系统通知 -->
             <div class="messsage-content" style="display: none">
                 <div class="message-card">
-                    <div id="message-card-4" class="message-space-right-bottom">
+                    <div id="message-card-4" class="message-space-right-bottom animated fadeInUp">
                         {% for notification in notify_for_system %}
-                            <div id='media-data-{{ notification.pk }}' class="media">
+                            <div id='media-data-{{ notification.pk }}' class="media animated">
                                 <div class="media-left ">
                                     <img class="img-circle media-object"
                                          src="/static/blog/img/comment-list-img.jpg">

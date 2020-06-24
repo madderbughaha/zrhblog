@@ -35,6 +35,8 @@ canvas {
 
 .navbar {
     background: rgba(0, 0, 0, 0.5) !important;
+    border: unset!important;
+    border-radius: unset!important;
 }
 
 input, button {
@@ -53,10 +55,9 @@ rect {
 
 .registerBox {
     background: rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 15px 25px 0 rgba(0, 0, 0, .6);
+    box-shadow: 0 15px 25px 0 rgba(0, 0, 0, .6);
     box-sizing: border-box;
-    margin-top: 2em;
-    border-radius: 10px;
+    margin-top: 1em;
 }
 
 .box-title-line{
@@ -151,7 +152,7 @@ rect {
 
 .button {
     font-family: "Times New Roman", Georgia, Serif, serif !important;
-    padding: 15px 20px;
+    padding: 10px 20px;
     margin-top: 30px;
     margin-left: 35px;
     color: #03e9f4;
