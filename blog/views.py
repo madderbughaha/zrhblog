@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-from django.db.models import Count, Sum
+from django.db.models import Count
+from haystack.views import SearchView
+
 from .models import Blog, BlogType
 from read_count.utils import read_statistics_once_read
-from read_count.utils import get_today_hot_data, get_7_days_hot_data
+from read_count.utils import get_7_days_hot_data
 from django.contrib.contenttypes.models import ContentType
 from django.core.cache import cache
 import markdown
@@ -21,7 +23,7 @@ def get_blog_list_common_date(request, blogs_all_list):
     page_num = request.GET.get('page', 1)
 
     # 每5篇分为一页
-    paginator = Paginator(blogs_all_list, 5)
+    paginator = Paginator(blogs_all_list, 10)
 
     page_of_blogs = paginator.get_page(page_num)
 
@@ -55,8 +57,6 @@ def get_blog_list_common_date(request, blogs_all_list):
     content_type = ContentType.objects.get_for_model(Blog)
 
     context = dict()
-    context['today_hot_data'] = get_today_hot_data(content_type)
-    context['recent_hot_data'] = recent_hot_data
     context['page_of_blogs'] = page_of_blogs
     context['blog_types'] = BlogType.objects.annotate(blog_count=Count('blog'))
     context['page_range'] = page_range
@@ -68,26 +68,27 @@ def get_blog_list_common_date(request, blogs_all_list):
 def blog_list(request):
     blogs_all_list = Blog.objects.all()
     context = get_blog_list_common_date(request, blogs_all_list)
-    context['recent_upload_blog'] = Blog.objects \
-                                        .values('id', 'title', 'create_time') \
-                                        .annotate(read_num_sum=Sum('read_details__read_num')) \
-                                        .order_by('-create_time')[:7]
     return render(request, 'blog/blog_list.html', context)
 
 
 # 博客内容
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog.objects.select_related().all(), pk=blog_pk)
-    blog.content = markdown.markdown(blog.content, extensions=[
-        'markdown.extensions.extra',
-        'markdown.extensions.toc',
-    ], safe_mode=True, enable_attributes=False).replace("pre", "pre class='prettyprint linenums'")
+    md = markdown.Markdown(
+        extensions=[
+            'markdown.extensions.extra',
+            'markdown.extensions.codehilite',
+            'markdown.extensions.toc',
+        ],
+    )
+    blog.content = md.convert(blog.content).replace("pre", "pre class='prettyprint linenums'")
     read_cookie_key = read_statistics_once_read(request, blog)
 
     context = dict()
     context['previous_blog'] = Blog.objects.filter(create_time__gt=blog.create_time).last()
     context['next_blog'] = Blog.objects.filter(create_time__lt=blog.create_time).first()
     context['blog'] = blog
+    context['toc'] = md.toc
 
     response = render(request, 'blog/blog_detail.html', context)
     if not request.COOKIES.get(read_cookie_key):
@@ -110,3 +111,21 @@ def blogs_with_date(request, year, month):
     context = get_blog_list_common_date(request, blogs_all_list)
     context['blogs_with_date'] = '%s年%s月' % (year, month)
     return render(request, 'blog/blog_with_date.html', context)
+
+
+# 重载haystack函数,返回更多数据
+class MySearchView(SearchView):
+    def extra_context(self):
+        context = super(MySearchView, self).extra_context()
+        blog_types = BlogType.objects.annotate(blog_count=Count('blog'))
+        # 获取日期归档下博客数量
+        blog_dates = Blog.objects.dates('create_time', 'month', order='DESC')
+        blog_dates_dict = {}
+        for blog_date in blog_dates:
+            blog_count = Blog.objects.filter(create_time__year=blog_date.year,
+                                             create_time__month=blog_date.month).count()
+            blog_dates_dict[blog_date] = blog_count
+        context['blog_types'] = blog_types
+        context['blog_dates'] = blog_dates_dict
+
+        return context

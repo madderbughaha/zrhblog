@@ -13,6 +13,10 @@ canvas {
     display: none;
 }
 
+footer{
+    display: none;
+}
+
 .bg {
     background: url("/static/blog/img/login_background.jpg") top/cover no-repeat fixed !important;
     height: 100%;

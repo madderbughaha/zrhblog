@@ -1,5 +1,7 @@
 import datetime
-from django.db.models import F, Sum
+
+from django.core.cache import cache
+from django.db.models import F, Sum, Max
 from django.contrib.contenttypes.models import ContentType
 from .models import ReadDetail, ReadNum
 from django.utils import timezone
@@ -43,20 +45,36 @@ def get_seven_days_read_data(content_type):
     return dates, read_nums
 
 
-# 获取当天热门博客
-def get_today_hot_data(content_type):
-    today = timezone.now().date()
-    read_details = ReadDetail.objects.filter(content_type=content_type, date__lt=today).order_by('-read_num')
-    return read_details[:1]
+# 获取最热博客
+def get_hottest_blog(content_type):
+    object_id = ReadDetail.objects.filter(content_type=content_type).values('object_id').order_by('-read_num').first()
+    content_object = content_type.model_class().objects.all().filter(id=object_id['object_id'])
+    return content_object
 
 
 # 获取7天热门博客
 def get_7_days_hot_data():
-    today = timezone.now().date()
-    date = today - datetime.timedelta(days=7)
-    blogs = Blog.objects \
-        .filter(read_details__date__lt=today, read_details__date__gte=date) \
-        .values('id', 'title', 'create_time') \
-        .annotate(read_num_sum=Sum('read_details__read_num')) \
-        .order_by('-read_num_sum')
-    return blogs[:7]
+    # 使用缓存获取热门博客
+    recent_hot_data = cache.get('recent_hot_data')
+
+    if recent_hot_data is None:
+        today = timezone.now().date()
+        date = today - datetime.timedelta(days=7)
+        blogs = Blog.objects \
+            .filter(read_details__date__lt=today, read_details__date__gte=date) \
+            .annotate(read_num_sum=Sum('read_details__read_num')) \
+            .order_by('-read_num_sum')
+        recent_hot_data = blogs[:7]
+        cache.set('recent_hot_data', recent_hot_data, 3600)
+    return recent_hot_data
+
+
+# 获取随机文章
+
+def get_recommend_article():
+    # 使用缓存获取推荐博客
+    recommend_article = cache.get('recommend_article')
+    if recommend_article is None:
+        recommend_article = Blog.objects.order_by('?')[:4]
+        cache.set('recommend_article', recommend_article, 86400)
+    return recommend_article

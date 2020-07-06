@@ -15,7 +15,7 @@ from django.core.mail import send_mail
 from django.core.validators import validate_email
 from urllib.parse import urlencode, parse_qs
 from .models import Profile, OAuthRelationShip
-from zrhblog import settings
+from zrhblog.settings import base
 from .forms import LoginForm, ChangeNicknameForm, BindEmailForm, ChangeEmailForm, ChangePasswordForm, ForgotPasswordForm
 
 
@@ -32,7 +32,7 @@ class SendMail(threading.Thread):
         send_mail(
             self.subject,
             self.text,
-            settings.EMAIL_HOST_USER,
+            base.EMAIL_HOST_USER,
             [self.email],
             fail_silently=self.fail_silently,
         )
@@ -43,14 +43,14 @@ def login_by_github(request):
     code = request.GET.get('code')
     state = request.GET.get('state')
 
-    if state != settings.GitHub_state:
+    if state != base.GitHub_state:
         raise Exception('state error')
     # Access token
     params = {
-        'client_id': settings.GitHub_APP_ID,
-        'client_secret': settings.GitHub_APP_Secret,
+        'client_id': base.GitHub_APP_ID,
+        'client_secret': base.GitHub_APP_Secret,
         'code': code,
-        'redirect_uri': settings.GitHub_Redirect,
+        'redirect_uri': base.GitHub_Redirect,
     }
     response = urllib.request.urlopen('https://github.com/login/oauth/access_token?' + urlencode(params))
     data = response.read().decode('utf-8')
@@ -153,8 +153,8 @@ def login(request):
 def logout(request):
     auth.logout(request)
     redirect_to = request.GET.get('from')
-    if (request.GET.get('from')).find('my_notifications'):
-        redirect_to = reverse('home')
+    if redirect_to.find('my_notifications') != -1:
+        return redirect('home')
     return redirect(redirect_to, reverse('home'))
 
 

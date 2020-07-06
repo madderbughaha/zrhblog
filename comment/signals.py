@@ -25,6 +25,6 @@ def send_notification(sender, instance, **kwargs):
         verb = '在评论"{0}"中回复了我:'.format(strip_tags(instance.parent.text))
         description = '@{0}：{1}'.format(instance.reply_to.get_nickname_or_username(), strip_tags(instance.text))
     url = instance.content_object.get_url() + "#root_" + str(instance.pk)
-    if instance.user == recipient:
+    if not instance.user == recipient:
         notify.send(instance.user, recipient=recipient, verb=verb, action_object=instance, description=description,
                     url=url)

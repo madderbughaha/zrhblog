@@ -277,6 +277,7 @@ div.modal-content{
     padding: 1.5em!important;
     border-radius: 12px!important;
     overflow: hidden;
+    top:200px!important;
 }
 
 div.modal-content-text{

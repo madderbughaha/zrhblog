@@ -20,4 +20,3 @@ def TextCount(striptags):
         nums = nums / 1000
         return str(round(nums, 2)) + 'k'
     return nums
-

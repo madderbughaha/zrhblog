@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% load highlight %}
+{% load blog_filter %}
+{% load comment_tags %}
+{% load likes_tags %}
+
+{% block title %}
+    "{{ query }}"的搜索结果...
+{% endblock %}
+
+{% block nav_blog_active %}active{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="/static/blog/css/blog.css">
+{% endblock %}
+
+{% block content %}
+    <div class="page-link wow fadeInDown" data-wow-delay="0.5s">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>ARTICLE PAGE</h3>
+                    <span>
+                        <a class="page-link-span" href="{% url 'home' %}">HOME</a>
+                         -
+                        <a class="page-link-span" href="{% url 'blog_list' %}">博客</a>
+                         -
+                        <span class="page-link-span">搜索</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row blog-row">
+            {% if query %}
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                    <div class="blog-list-content panel panel-default wow fadeInLeft" data-wow-delay="0.6s">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">
+                                {% block blog_list_title %}
+                                    <span style="color: #F5AC37">"{{ query }}"</span>的搜索结果如下
+                                {% endblock %}
+                                <label class="blog-list-toggle"><input type="checkbox"><span
+                                        class="toggle-style"></span></label>
+                            </h2>
+                        </div>
+                        <div class="panel-body">
+                            {% for result in page.object_list %}
+                                <div class="blog">
+                                <span>
+                                    <h3>
+                                        <a class="color-black" href="{% url 'blog_detail' result.object.pk %}">
+                                        {% highlight result.object.title with query max_length 40 %}
+                                        </a>
+                                    </h3>
+                                </span>
+                                    <ol class="blog-info breadcrumb">
+                                        <li class="active"><span class="glyphicon glyphicon-time"></span>
+                                            <span class="hidden-xs">发表:</span> {{ result.object.create_time|date:"Y-m-d" }}
+                                        </li>
+                                        <li class="active"><span class="meta glyphicon glyphicon-refresh"></span>
+                                            <span class="hidden-xs">更新:</span> {{ result.object.last_update_time|date:"Y-m-d" }}
+                                        </li>
+                                        <li class="active"><span class="meta glyphicon glyphicon-tag"></span>
+                                            <span class="hidden-xs">分类:</span> <a
+                                                    href="{% url 'blog_with_type' result.object.blog_type.pk %}">
+                                                {{ blog.blog_type }}
+                                            </a></li>
+                                        <li class="active"><span class="meta glyphicon glyphicon-book"></span>
+                                            <span class="hidden-xs">本文字数</span> {{ result.object.content|striptags|TextCount }}
+                                        </li>
+                                        <li class="active"><span class="glyphicon glyphicon-eye-open"></span>
+                                            <span class="hidden-xs">阅读</span>({{ result.object.get_read_num }})
+                                        </li>
+                                        <li class="active"><span class="glyphicon glyphicon-comment"></span>
+                                            <span class="hidden-xs">评论</span>({% get_comment_count result.object %})
+                                        </li>
+                                        <li class="active"><span class="like-icon iconfont icon-dianzan"></span>
+                                            <span class="hidden-xs">点赞</span>({% get_like_count result.object %})
+                                        </li>
+                                    </ol>
+                                    <p>{% highlight result.object.content with query max_length 60 %}</p>
+                                </div>
+                                <div class="blog-as-card">
+                                    <div class="card-img">
+                                        <img src="{{ result.object.pic_800_450.url }}" alt="">
+                                    </div>
+                                    <div class="card-content">
+                                        <div class="card-blog-title">
+                                            <h4>
+                                                <a class="color-black" href="{% url 'blog_detail' result.object.pk %}">
+                                                    {{ result.object.title }}
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div class="card-blog-info">
+                                            <ol class="blog-info breadcrumb">
+                                                <li class="active"><span class="glyphicon glyphicon-time"></span>
+                                                    <span class="hidden-xs">发表:</span> {{ result.object.create_time|date:"Y-m-d" }}
+                                                </li>
+                                                <li class="active"><span class="meta glyphicon glyphicon-tag"></span>
+                                                    <span class="hidden-xs">分类:</span> <a
+                                                            href="{% url 'blog_with_type' result.object.blog_type.pk %}">
+                                                        {{ result.object.blog_type }}
+                                                    </a>
+                                                </li>
+                                                <li class="active"><span class="glyphicon glyphicon-eye-open"></span>
+                                                    <span class="hidden-xs">阅读</span>({{ result.object.get_read_num }})
+                                                </li>
+                                            </ol>
+                                        </div>
+                                        <div class="card-blog-content">
+                                            <p>{{ result.object.content|striptags|truncatechars:60 }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="blog"><p>-- 没有搜到你想要的内容 --</p></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="paginator wow fadeInUp" data-wow-delay=".6s">
+                        <ul class="pagination">
+                            {# 上一页 #}
+                            <li>
+                                {% if page.has_previous %}
+                                    <a class="color-black"
+                                       href="?q={{ query }}&amp;page={{ page.previous_page_number }}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                {% else %}
+                                    <span hidden="true">上一页</span>
+                                {% endif %}
+                            </li>
+                            {# 全部页码 #}
+                            {% for pagelist in page.paginator.page_range %}
+                                {% if page.number == pagelist %}
+                                    <li class="active"><span>{{ page.number }}</span></li>
+                                {% else %}
+                                    {% if page_num == '...' %}
+                                        <li><span>{{ page.number }}</span></li>
+                                    {% else %}
+                                        <li><a class="color-black"
+                                               href="?q={{ query }}&amp;page={{ pagelist }}">{{ pagelist }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            {# 下一页 #}
+                            <li>
+                                {% if page.has_next %}
+                                    <a href="?q={{ query }}&amp;page={{ page.next_page_number }}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                {% else %}
+                                    <span hidden="true">下一页</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <p>
+                            共有{{ page.paginator.count }}篇博客，
+                            当前为第{{ page.number }}页，
+                            共{{ page.paginator.num_pages }}页
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <div class="search wow fadeInDown" data-wow-delay="0.6s">
+                    <form action="{% url 'my_search' %}" method="get">
+                        <label class="input-group">
+                            <input type="search" class="form-control" placeholder="随便看看..." name="q">
+                            <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit"><span
+                                            class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                        </label><!-- /input-group -->
+                    </form>
+                </div>
+                <div class="blog-sort-content panel panel-default wow fadeInRight" data-wow-delay="0.6s">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">博客分类</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="blog-types">
+                            {% for blog_type in blog_types %}
+                                <li><a class="color-black" href="{% url 'blog_with_type' blog_type.pk %}">
+                                    -- {{ blog_type.type_name }} ({{ blog_type.blog_count }})
+                                </a></li>
+                                <hr>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="blog-date-content panel panel-default wow fadeInUp" data-wow-delay="0.6s">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">日期归档</h3>
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                            {% for blog_date, blog_count in blog_dates.items %}
+                                <a class="color-black"
+                                   href="{% url 'blogs_with_date' blog_date.year blog_date.month %}">
+                                    <li>-- {{ blog_date|date:"Y年m月" }} ({{ blog_count }})</li>
+                                </a>
+                                <hr>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

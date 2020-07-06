@@ -1,21 +1,32 @@
+{% load  static %}
 <html lang="zn-CN">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{% static 'blog/img/favicon.ico' %}">
     <link rel="stylesheet" href="/static/blog/css/base.css">
     <link rel="stylesheet" href="/static/bootstrap-3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/assets/waifu.css">
     <link rel="stylesheet" href="/static/blog/css/animate.min.css">
     <link rel="stylesheet" href="/static/iconfont/iconfont.css">
     <link rel="stylesheet" href="/static/blog/css/toast.css">
     <link rel="stylesheet" href="/static/blog/css/animate.css">
     <link rel="stylesheet" href="/static/blog/css/swiper.min.css">
+    <link rel="stylesheet" href="/static/blog/css/APlayer.min.css">
     {% block header_extends %}{% endblock %}
 </head>
 <body>
 <div>
+    <div id="preloader_1">
+        <div>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
     <div class="bg"></div>
     <div class="con">
         <header>
@@ -31,10 +42,10 @@
                         </button>
                     </div>
                     <div id="navbar-collapse" class="collapse navbar-collapse">
-                        <ul class="nav navbar-nav">
+                        <ul class="nav navbar-nav navbar-left">
                             <li><a href="{% url 'home' %}">首页</a></li>
                             <li><a href="{% url 'blog_list' %}">博客</a></li>
-                            <li><a href="{% url 'blog_list' %}">作品</a></li>
+                            <li><a href="{% url 'blog_list' %}">实验室</a></li>
                             <li><a href="{% url 'blog_list' %}">关于我</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right nav-dropdown">
@@ -43,17 +54,19 @@
                                 <li><a href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a></li>
                             {% else %}
                                 <li class="nav-dropdown-button">
-                                    <a href="#">{{ user.get_nickname_or_username }}<span class="caret"></span></a>
+                                    <a href="javascript:;">{{ user.get_nickname_or_username }}<span
+                                            class="caret"></span></a>
                                     <ul class="nav-dropdown-menu">
-                                        <li><a href="{% url 'user_info' %}">个人资料</a></li>
-                                        <li>
+                                        <li class="animated fadeInDown"><a href="{% url 'user_info' %}">个人资料</a></li>
+                                        <li class="animated fadeInDown">
                                             <a href="{% url 'my_notifications' %}">我的消息
                                                 {% if request.user.notifications.unread %}
                                                     <span class="badge unread">{{ request.user.notifications.unread.count }}</span>
                                                 {% endif %}
                                             </a>
                                         </li>
-                                        <li><a href="{% url 'logout' %}?from={{ request.get_full_path }}">注销</a></li>
+                                        <li class="animated fadeInDown"><a
+                                                href="{% url 'logout' %}?from={{ request.get_full_path }}">用户注销</a></li>
                                     </ul>
                                 </li>
                             {% endif %}
@@ -63,20 +76,22 @@
             </div>
             {% block header_nav_extend %}{% endblock %}
         </header>
-        <div id="read-num-container" class="container-hidden col-xs-12
-                                    col-md-7 col-md-offset-3 col-lg-6 col-lg-offset-3"></div>
         {% block content %}{% endblock %}
+        <footer id="footer">
+            <div class="domain-info wow fadeInUp" data-wow-delay=".6s" data-wow-duration=".5s">
+                <p>Copyright © 2020 故里Note [www.zrhblog.top] All Rights Reserved</p>
+                <a href="http://www.beian.miit.gov.cn" target="_blank">备案号：闽ICP备20012295号-1</a>
+            </div>
+        </footer>
     </div>
 </div>
-<script src="/static/bootstrap-3.3.7/js/jquery.min.js"></script>
-<script src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
-<script src="/static/blog/js/toast.js"></script>
-<script src="/static/blog/js/swiper.min.js"></script>
-<script src="/static/blog/js/swiper.animate1.0.3.min.js"></script>
-<script src="/static/blog/js/base.js"></script>
-<script src="/static/blog/js/wow.min.js"></script>
-<script src="/static/blog/js/echarts.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sons-of-obsidian"></script>
+<script type="text/javascript" src="/static/bootstrap-3.3.7/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/blog/js/toast.js"></script>
+<script type="text/javascript" src="/static/blog/js/base.js"></script>
+<script type="text/javascript" src="/static/blog/js/wow.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sons-of-obsidian"></script>
 <script type="text/javascript">
     //wow.js
     wow = new WOW({
@@ -94,7 +109,6 @@
     });
 
     new WOW().init();
-
 </script>
 {% include 'back_to_top.html' %}
 {% block script_extend %}{% endblock %}

@@ -26,7 +26,7 @@ class Blog(models.Model, GetReadNumOrReadObj):
     # 文章标题图
     pic_800_450 = ProcessedImageField(
         upload_to='article/%Y%m%d/',
-        processors=[ResizeToFill(800, 450)],
+        processors=[ResizeToFill(1100, 650)],
         format='JPEG',
         options={'quality': 95},
         verbose_name='标题图',

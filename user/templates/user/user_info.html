@@ -6,13 +6,35 @@
 {% endblock %}
 
 {% block content %}
+    <div class="page-link wow fadeInDown" data-wow-delay="0.5s">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3>ARTICLE PAGE</h3>
+                    <span>
+                        <a class="page-link-span" href="{% url 'home' %}">HOME</a>
+                         -
+                        <a class="page-link-span" href="{% url 'blog_list' %}">博客</a>
+                        {% if blog_type.type_name %}
+                            -
+                            <span class="page-link-span">{{ blog_type.type_name }}</span>
+                        {% elif blogs_with_date %}
+                            -
+                            <span class="page-link-span">归档</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-xs-10 col-xs-offset-1">
                 {% if user.is_authenticated %}
                     <h2>{{ user.username }}</h2>
                     <ul>
-                        <li>昵称：{{ user.get_nickname_or_username }} <a href="{% url 'change_nickname' %}?from={{ request.get_full_path }}">修改昵称</a></li>
+                        <li>昵称：{{ user.get_nickname_or_username }} <a
+                                href="{% url 'change_nickname' %}?from={{ request.get_full_path }}">修改昵称</a></li>
                         <li>邮箱：
                             {% if user.email %}
                                 {{ user.email }}

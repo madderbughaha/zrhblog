@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    我的网站|首页
+    欢迎来到ZRHBLOG|首页
 {% endblock %}
 
 {% block header_extends %}
@@ -17,7 +17,7 @@
             <div class="swiper-wrapper">
                 <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg05.jpg');">
                     <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-                         swiper-animate-effect="bounceIn">
+                         swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s">
                         <div class="row">
                             <div>
                                 <div class="title-box ">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg02.jpg');">
                     <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-                         swiper-animate-effect="bounceIn">
+                         swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s">
                         <div class="row">
                             <div>
                                 <div class="title-box">
@@ -55,7 +55,7 @@
                 </div>
                 <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg03.jpg')">
                     <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-                         swiper-animate-effect="bounceIn">
+                         swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s">
                         <div class="row">
                             <div>
                                 <div class="title-box">
@@ -73,7 +73,7 @@
                 </div>
                 <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg04.jpg')">
                     <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-                         swiper-animate-effect="bounceIn">
+                         swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s">
                         <div class="row">
                             <div>
                                 <div class="title-box">
@@ -91,7 +91,7 @@
                 </div>
                 <div class="swiper-slide" style="background-image: url('/static/blog/img/bgimg01.jpg')">
                     <div class="ani align container col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center"
-                         swiper-animate-effect="bounceIn">
+                         swiper-animate-effect="fadeInUp" swiper-animate-duration="0.5s">
                         <div class="row">
                             <div>
                                 <div class="title-box">
@@ -134,103 +134,272 @@
     </div>
 {% endblock %}
 {% block content %}
-    <main>
-        <div class="home-detail">
-            <div class="container">
-                <div class="row">
-                    <article class="home-detail-content col-xs-12 col-md-8">
-                        <section class="site-info wow animated fadeIn" data-wow-delay="0.6s" data-wow-duration="1s">
-                            <div class="site-info-title">
-                                <h3>博客信息</h3>
-                                <ul class="hidden-md hidden-xs">
-                                    <li id="total_visit"><span class="glyphicon glyphicon-fire"></span>
-                                        阅读总量:{{ total_read_num }}</li>
-                                    <li id="days_running"><span class="glyphicon glyphicon-certificate"></span>
-                                        运行天数：0
-                                    </li>
-                                    <li id="article_count"><span class="glyphicon glyphicon-file"></span>
-                                        文章数量:{{ total_blog }}
-                                    </li>
-                                    <li id="comment_count"><span class="glyphicon glyphicon-comment"></span>
-                                        评论数量：{{ total_comment }}
-                                    </li>
+    <div class="home-detail">
+        <div class="container">
+            <div class="row">
+                <div class="home-detail-content col-xs-12 col-md-8">
+                    <section class="person-info mobile-person-info wow animated fadeInUp hidden-md hidden-lg"
+                             data-wow-delay="0.6s">
+                        <div id="left"></div>
+                        <div id="top"></div>
+                        <div id="right"></div>
+                        <div id="bottom"></div>
+                        <div class="person-img">
+                            <img class="my-avatar" src="/static/blog/img/my_avatar.jpg" alt="">
+                        </div>
+                        <div class="person-intro">
+                            <p class="person-name">渣炉灰</p>
+                            <p class="person-motto">你为什么不问问神奇海螺呢？</p>
+                            <p class="person-motto-e">Why don't you try to ask the magic conch ?</p>
+                        </div>
+                        <div class="person-footer">
+                            <a href="https://github.com/zhanronghui" title="View My GitHub"><span
+                                    class="iconfont icon-github"></span></a>
+                            <a href="https://gitee.com/glblog" title="View My Gitee"><span
+                                    class="iconfont icon-gitee"></span></a>
+                        </div>
+                    </section>
+                    <section class="site-info wow animated fadeIn" data-wow-delay="0.6s" data-wow-duration="1s">
+                        <div class="site-info-title">
+                            <h3>博客信息</h3>
+                            <ul class="hidden-xs">
+                                <li id="total_visit"><span class="glyphicon glyphicon-fire"></span>
+                                    阅读总量:{{ total_read_num }}</li>
+                                <li id="days_running"><span class="glyphicon glyphicon-leaf"></span>
+                                    <p>运行天数：0</p>
+                                </li>
+                                <li id="article_count"><span class="glyphicon glyphicon-file"></span>
+                                    文章数量:{{ total_blog }}
+                                </li>
+                                <li id="comment_count"><span class="glyphicon glyphicon-comment"></span>
+                                    评论数量：{{ total_comment }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="blog-chart"></div>
+                    </section>
+                    <p class="echart-url"><a href="https://echarts.apache.org/zh/index.html" target="_blank">BY
+                        ECHARTS</a></p>
+                    <article class="rec-article wow fadeIn" data-wow-delay="0.3s">
+                        <h3>Recommend Article</h3>
+                        {% for article in get_recommend_article %}
+                            <div class="post-content wow animated fadeInLeft" data-wow-delay="0.6s">
+                                <section class="post-user">
+                                        <span class="bookmark" data-before="{{ article.blog_type }}">
+
+                                        </span>
+                                    <a>
+                                        <img src='/static/blog/img/my_avatar.jpg' alt="">
+                                    </a>
+                                    <p class="name">{{ article.author }}</p>
+                                    <p class="post-time">{{ article.create_time }}</p>
+                                </section>
+                                <section class="post-title">
+                                    <a href={% url 'blog_detail' article.pk %}><p>#{{ article.title }}</p></a>
+                                </section>
+                                <div class="post-img">
+                                    <a href={% url 'blog_detail' article.pk %}>
+                                        <img src='{{ article.pic_800_450.url }}' alt='{{ article.title }}'>
+                                    </a>
+                                </div>
+                                <section class="post-option">
+                                    <p class="reply-count"><span
+                                            class="iconfont icon-huifu"></span><span>{% get_like_count article %}</span>
+                                    </p>
+                                    <p class="like_count"><span
+                                            class="iconfont icon-dianzan"></span><span>{% get_comment_count article %}</span>
+                                    </p>
+                                </section>
+                            </div>
+                        {% empty %}
+                            <p>暂无推荐</p>
+                        {% endfor %}
+                    </article>
+                    <article class="hottest-post">
+                        <div class="host-post wow animated fadeInUp" data-wow-delay="0.6s">
+                            <section class="post-user">
+                                        <span class="bookmark" data-before="{{ large_article.blog_type }}">
+
+                                        </span>
+                                <a>
+                                    <img src='/static/blog/img/my_avatar.jpg' alt="">
+                                </a>
+                                <p class="name">{{ large_article.author }}</p>
+                                <p class="post-time">{{ large_article.create_time }}</p>
+                            </section>
+                            <section class="post-title">
+                                <a href={% url 'blog_detail' large_article.id %}><p>#{{ large_article.title }}</p>
+                                </a>
+                            </section>
+                            <div class="post-img">
+                                <a href={% url 'blog_detail' large_article.id %}>
+                                    <img src='{{ large_article.pic_800_450.url }}' alt='{{ large_article.title }}'>
+                                </a>
+                            </div>
+                            <section class="post-option">
+                                <p class="reply-count"><span
+                                        class="iconfont icon-huifu"></span><span>{% get_like_count large_article %}</span>
+                                </p>
+                                <p class="like_count"><span
+                                        class="iconfont icon-dianzan"></span><span>{% get_comment_count large_article %}</span>
+                                </p>
+                                <p class="read_num">
+                                    <span class="glyphicon glyphicon-eye-open"></span><span>{{ large_article.get_read_num }}</span>
+                                </p>
+                            </section>
+                        </div>
+                    </article>
+                </div>
+                <aside id="sidebar" class="hidden-sm hidden-xs col-md-4 col-lg-4">
+                    <section class="person-info wow animated fadeInUp" data-wow-delay="0.6s">
+                        <div id="left"></div>
+                        <div id="top"></div>
+                        <div id="right"></div>
+                        <div id="bottom"></div>
+                        <div class="person-img">
+                            <img class="my-avatar" src="/static/blog/img/my_avatar.jpg" alt="">
+                        </div>
+                        <div class="person-intro">
+                            <p class="person-name">渣炉灰</p>
+                            <p class="person-motto">你为什么不问问神奇海螺呢？</p>
+                            <p class="person-motto-e">Why don't you try to ask the magic conch ?</p>
+                        </div>
+                        <div class="person-footer">
+                            <a href="https://github.com/zhanronghui" title="View My GitHub"><span
+                                    class="iconfont icon-github"></span></a>
+                            <a href="https://gitee.com/glblog" title="View My Gitee"><span
+                                    class="iconfont icon-gitee"></span></a>
+                        </div>
+                    </section>
+                    <section id="Aplayer" class="music-box wow animated fadeInUp" data-wow-delay=".6s">
+
+                    </section>
+                    <section class="search wow animated fadeInRight" data-wow-delay="0.3s">
+                        <form action="{% url 'my_search' %}" method="get">
+                            <label class="input-group">
+                                <input type="search" class="form-control" placeholder="随便看看..." name="q">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit"><span
+                                            class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                </span>
+                            </label><!-- /input-group -->
+                        </form>
+                    </section>
+                    <section class="tab-hot-data wow animated fadeInUp" data-wow-delay="0.6s">
+                        <div class="tab-head">
+                            <ul>
+                                <li>
+                                    <a class="tab-active">最近上传</a>
+                                </li>
+                                <li>
+                                    <a>热门文章</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-item">
+                                <ul>
+                                    {% for recent_blog in recent_upload_blog %}
+                                        <li class="media">
+                                            <div class="media-left hot-data-head">
+                                                <a href="{% url 'blog_detail' recent_blog.id %}">
+                                                    <img class="media-object"
+                                                         src="{{ recent_blog.pic_800_450.url }}">
+                                                </a>
+                                            </div>
+                                            <div class="media-body hot-data-body">
+                                                <h4 class="media-heading">
+                                                    <a class="color-black"
+                                                       href="{% url 'blog_detail' recent_blog.id %}">
+                                                        {{ recent_blog.title }}
+                                                    </a>
+                                                </h4>
+                                                <ol class="blog-info">
+                                                    <li class="active">
+                                                        <span class="meta glyphicon glyphicon-time"></span>
+                                                        {{ recent_blog.create_time|date:'Y年n月j日G:i' }}</li>
+                                                </ol>
+                                            </div>
+                                        </li>
+                                    {% empty %}
+                                        <li>最近没有上传博客</li>
+                                    {% endfor %}
                                 </ul>
                             </div>
-                            <div id="blog-chart"></div>
-                        </section>
-                        <p class="echart-url"><a href="https://echarts.apache.org/zh/index.html" target="_blank">BY
-                            ECHARTS</a></p>
-                        <section class="rec-article">
-                            <h3>Recommend Article</h3>
-                            {% for article in get_recommend_article %}
-                                <div class="post-content wow animated fadeInLeft" data-wow-delay="0.6s">
-                                    <section class="post-user">
-                                        <a href="javascript:;">
-                                            <img src='/static/blog/img/my_avatar.jpg' alt="">
-                                        </a>
-                                        <p class="name">{{ article.author }}</p>
-                                        <p class="post-time">{{ article.create_time }}</p>
-                                    </section>
-                                    <section class="post-title">
-                                        <p><a href={% url 'blog_detail' article.pk %}>#{{ article.title }}</a></p>
-                                    </section>
-                                    <div class="post-img">
-                                        <img src='{{ article.pic_800_450.url }}' alt='{{ article.title }}'>
-                                    </div>
-                                    <section class="post-option">
-                                        <p class="reply-count"><span
-                                                class="iconfont icon-huifu"></span><span>{% get_like_count article %}</span>
-                                        </p>
-                                        <p class="like_count"><span
-                                                class="iconfont icon-dianzan"></span><span>{% get_comment_count article %}</span>
-                                        </p>
-                                    </section>
+                            <div class="tab-item" style="display: none">
+                                <ul>
+                                    {% for hot_blog in recent_hot_data %}
+                                        <li class="media">
+                                            <div class="media-left hot-data-head">
+                                                <a href="{% url 'blog_detail' hot_blog.id %}">
+                                                    <img class="media-object img-rounded"
+                                                         src='{{ hot_blog.pic_800_450.url }}'
+                                                         alt="...">
+                                                </a>
+                                            </div>
+                                            <div class="media-body hot-data-body">
+                                                <h4 class="media-heading">
+                                                    <a class="color-black"
+                                                       href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}
+                                                    </a>
+                                                </h4>
+                                                <ol class="blog-info">
+                                                    <li class="active">
+                                                        <span>有{{ hot_blog.read_num_sum }}人看过</span>
+                                                    </li>
+                                                </ol>
+                                            </div>
+                                        </li>
+                                    {% empty %}
+                                        <li>暂时没有热门博客</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="recent-comment-box wow animated fadeInRight" data-wow-delay="0.6s">
+                        <h4>最新评论</h4>
+                        {% for comment in recent_comment %}
+                            <div class="recent-comment">
+                                <div class="recent-comment-left">
+                                    <a href="{% url 'blog_detail' comment.object_id %}">
+                                        <img src="/static/blog/img/my_avatar.jpg" alt="">
+                                    </a>
                                 </div>
-                            {% empty %}
-                                <p>暂无推荐</p>
-                            {% endfor %}
-                        </section>
-                        <section>
-
-                        </section>
-                    </article>
-                    <aside id="sidebar" class="col-xs-12 col-md-4">
-                        <section class="person-info wow animated fadeInRight" data-wow-delay="0.6s">
-                            <div id="left"></div>
-                            <div id="top"></div>
-                            <div id="right"></div>
-                            <div id="bottom"></div>
-                            <div class="person-img">
-                                <img class="my-avatar" src="/static/blog/img/my_avatar.jpg" alt="">
+                                <div class="recent-comment-right">
+                                    <span>{{ comment.user.get_nickname_or_username }}</span>
+                                    <small>{{ comment.comment_time|date:"Y年-m月-d日" }}</small>
+                                    <div class="comment-content">
+                                        <a href="{% url 'blog_detail' comment.object_id %}">{{ comment.text|striptags }}</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="person-intro">
-                                <p class="person-name">九七老不死</p>
-                                <p class="person-motto">你为什么不问问神奇海螺呢？</p>
-                                <p class="person-motto-e">Why don't you try to ask the magic conch ?</p>
-                            </div>
-                            <div class="person-footer">
-                                <a href="https://github.com/zhanronghui" title="View My GitHub"><span
-                                        class="iconfont icon-github"></span></a>
-                                <a href="https://gitee.com/glblog" title="View My Gitee"><span
-                                        class="iconfont icon-gitee"></span></a>
-                            </div>
-                        </section>
-                        <section class="search wow animated fadeInUp">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="随便看看...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button"><span
-                                            class="glyphicon glyphicon-search"></span></button>
-                                </span>
-                            </div><!-- /input-group -->
-                        </section>
-                    </aside>
-                </div>
+                        {% empty %}
+                            <p>暂时没有人评论</p>
+                        {% endfor %}
+                    </section>
+                    <section class="site-announce wow animated fadeInUp" data-wow-delay="0.6s ">
+                        <h4>站点信息</h4>
+                        <div class="annouce-content">
+                            <ul>
+                                <li>支持HTTPS</li>
+                                <li>运行于Aliyun</li>
+                                <li>Haystack全文高亮检索</li>
+                                <li>后续开发中...</li>
+                            </ul>
+                        </div>
+                    </section>
+                </aside>
             </div>
         </div>
-    </main>
+    </div>
 {% endblock %}
 {% block script_extend %}
+    <script type="text/javascript"  src="/static/blog/js/swiper.min.js"></script>
+    <script type="text/javascript" src="/static/blog/js/swiper.animate1.0.3.min.js"></script>
+    <script type="text/javascript" src="/static/blog/js/APlayer.min.js"></script>
+    <script type="text/javascript" src="/static/blog/js/echarts.min.js"></script>
     <script type="text/javascript">
         //home页轮播图插件
         const galleryThumbs = new Swiper('.switch-slideshow', {
@@ -294,7 +463,6 @@
 
         //绘制博客图表
         const blog_chart = echarts.init(document.getElementById('blog-chart'));
-
         //指定图标数据
         blog_chart.setOption({
             title: {
@@ -355,7 +523,7 @@
 
         });
 
-
+        //记录网站运行天数
         function days_running() {
             const Birthday = new Date('2020-6-20');
             const Today = new Date();
@@ -363,21 +531,42 @@
             const second_perday = 24 * 60 * 60 * 1000;
             const days_old = time_old / second_perday;
             const days_running = Math.floor(days_old);
-            $('#days_running').text('运行天数：' + days_running + '天')
+            $('#days_running p').text('运行天数：' + days_running + '天')
         }
 
         days_running();
 
-        function search_focus() {
-            const search_input = $('.search input');
-            search_input.focus(function () {
-                $('.search button').addClass('btn_to_red')
-            });
-            search_input.blur(function () {
-                $('.search button').removeClass('btn_to_red')
-            });
-        }
-
-        search_focus()
+        //Aplayer,使用ajax请求获取歌曲信息
+        $(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'https://api.usuuu.com/music/list/510529769',
+                dataType: 'json',
+                success: function (data) {
+                    const musicPlayer = new APlayer({
+                        container: document.getElementById('Aplayer'),
+                        mini: false,
+                        autoplay: false,
+                        theme: '#b7daff',
+                        loop: 'all',
+                        order: 'random',
+                        preload: 'auto',
+                        volume: 0.7,
+                        mutex: true,
+                        listFolded: true,
+                        lrcType: 3,
+                        audio: data.data.list.map(function (item) {
+                            return {
+                                name: item.name,
+                                artist: item.author.join('&'),
+                                cover: item.img,
+                                lrc: item.lrc,
+                                url: item.url
+                            }
+                        })
+                    })
+                }
+            })
+        })
     </script>
 {% endblock %}
