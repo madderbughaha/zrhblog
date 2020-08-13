@@ -30,7 +30,7 @@ class Blog(models.Model, GetReadNumOrReadObj):
         format='JPEG',
         options={'quality': 95},
         verbose_name='标题图',
-        blank=True
+        blank=True,
     )
 
     def __str__(self):

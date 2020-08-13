@@ -1,5 +1,6 @@
-**/settings
-**/__pycache__
-/media
-/.idea
-**/migrations
+/static
+**/migrations/
+**/production.py
+.idea/
+__pycache__/
+db.sqlite3

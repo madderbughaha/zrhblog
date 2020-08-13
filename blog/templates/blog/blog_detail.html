@@ -50,8 +50,7 @@
             <div class="col-md-8 col-lg-9 col-xs-12">
                 <div class="blog-main wow fadeInUp" data-wow-delay="0.3s">
                     <div class="blog-detail-content">
-                        <h3 class="blog-title">{{ blog.title }}</h3>
-                        <div>{{ blog.content|safe }}</div>
+                        <div style="line-height: 30px!important;">{{ blog.content|safe }}</div>
                         <div class="blog-more">
                             <ul class="pager">
                                 {% if previous_blog %}

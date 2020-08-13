@@ -30,6 +30,7 @@ urlpatterns = [
     path('like/', include('likes.url')),
     path('notify/', include('notify.urls')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
+    path('api/', include('api.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
